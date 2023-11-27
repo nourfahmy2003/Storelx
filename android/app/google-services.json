@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "768309167093",
+    "project_id": "storelx-101c1",
+    "storage_bucket": "storelx-101c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768309167093:android:43ae632a2089230ebb16bc",
+        "android_client_info": {
+          "package_name": "com.example.storelx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuQWmbiLepWCdVlTEI3_rv7k3pawdLBcw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
