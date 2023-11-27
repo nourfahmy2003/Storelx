@@ -1,27 +1,36 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:storelx/Screens/Auth/Signup.dart';
 
-class LoginPage extends StatefulWidget {
+
+class SignupPage extends StatefulWidget {
+  final VoidCallback showLoginPage;
+  const SignupPage({Key? key, required this.showLoginPage}) : super(key: key);
+  
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignupPageState createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  Future signIn() async{
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(), 
-        password: _passwordController.text.trim());
-  }
-  @override
+  final _confirmPassController = TextEditingController();
+
   void dispose(){
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPassController.dispose();
     super.dispose();
   }
-  
+  Future signUp() async{
+     if (_confirmPassController.text.trim() == _passwordController.text.trim()){
+      await FirebaseAuth.instance.createUserWithEmailAndPassword
+      (email: _emailController.text.trim(), 
+      password: _passwordController.text.trim());
+     }
+     
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Login',
+              'Register Now',
               style: TextStyle(
                 fontSize: 30.0,
                 fontWeight: FontWeight.bold,
@@ -84,11 +93,32 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 5),
             
-            //sign In button
+            //Confirm Password text field
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:20),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black87,),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(padding: EdgeInsets.only(left: 20),
+                child: TextField(
+                  controller: _confirmPassController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Confirm Password',
+                  ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 5),
+            //sign up button
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GestureDetector(
-                onTap: signIn,
+                onTap: signUp,
                 child: Container(
                   decoration: BoxDecoration(color: Colors.red,
                   borderRadius: BorderRadius.circular(30),),
@@ -98,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                     // onPressed: () {
                     //   Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
                     // },
-                    child: Text('Sign In', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600,fontSize: 18),),
+                    child: Text('Sign Up', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600,fontSize: 18),),
                     
                   ),
                 ),
@@ -110,17 +140,16 @@ class _LoginPageState extends State<LoginPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Not a member?'),
-                  Container(
-                   padding: EdgeInsets.only(left:5),
-                    child: Center(
-                      // onPressed: () {
-                      //   Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
-                      // },
-                      child: Text('Register now', style: TextStyle(color: Colors.red,fontWeight:FontWeight.w700),),
-                      
-                    ),
+                Text('I am a member,'),
+                GestureDetector(
+                  onTap: widget.showLoginPage,
+                  child: Text(' Login now', 
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.w700
+                    )
                   ),
+                )
               ],
             ),
           ],
@@ -130,4 +159,5 @@ class _LoginPageState extends State<LoginPage> {
     ),
     );
   }
-}
+} 
+
