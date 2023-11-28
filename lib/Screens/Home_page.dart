@@ -24,7 +24,13 @@ class _HomePageState extends State<HomePage> {
             FirebaseAuth.instance.signOut();
             },
             color: Colors.red,
-            child: Text('Sign Out'),
+            child: Text('Sign out'),
+            ),
+            MaterialButton(onPressed:(){
+            user.delete();
+            },
+            color: Colors.red,
+            child: Text('Delete Account'),
             )
         ],
       )),

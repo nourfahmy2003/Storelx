@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:storelx/Screens/sign%20in/up/ForgotPass.dart';
 // import 'package:storelx/Screens/Auth/Signup.dart';
