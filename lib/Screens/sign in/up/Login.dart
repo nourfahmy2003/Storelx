@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:storelx/Screens/sign%20in/up/ForgotPass.dart';
 // import 'package:storelx/Screens/Auth/Signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( backgroundColor: Colors.grey[200],
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: Center( 
@@ -46,32 +48,37 @@ class _LoginPageState extends State<LoginPage> {
             
             //Email text
             Padding(
+  
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black87,),
+                  border: Border.all(color: Colors.white,),
                   borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
                 ),
-                child: Padding(padding: EdgeInsets.only(left: 20),
+                child: Padding(padding: EdgeInsets.only(left: 20) 
+                ,
                 child: TextField(
                   controller: _emailController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Email',
+                    
                   ),
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
 
             //Password text 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal:20),
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black87,),
+                  border: Border.all(color: Colors.white,),
                   borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
                 ),
                 child: Padding(padding: EdgeInsets.only(left: 20),
                 child: TextField(
@@ -85,8 +92,32 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             
+            //Forgot Password button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(context,
+                      MaterialPageRoute(builder: (context){
+                        return forgotPassPage();
+                          }
+                        )
+                      );
+                    },
+                    child: Text('Forgot password?',
+                    style: TextStyle(color: Colors.blue[400],
+                    fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 12),
             //sign In button
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

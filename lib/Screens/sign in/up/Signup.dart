@@ -21,19 +21,53 @@ class _SignupPageState extends State<SignupPage> {
     _confirmPassController.dispose();
     super.dispose();
   }
-  Future signUp() async{
-     if (_confirmPassController.text.trim() == _passwordController.text.trim()){
-      await FirebaseAuth.instance.createUserWithEmailAndPassword
-      (email: _emailController.text.trim(), 
-      password: _passwordController.text.trim());
-     }
-     
+  Future signUp() async {
+  try {
+    if (_confirmPassController.text.trim() == _passwordController.text.trim()) {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text('Passwords do not match'),
+          );
+        },
+      );
+    }
+  } catch (e) {
+    // Check if the error is due to the email already being in use
+    if (e is FirebaseAuthException && e.code == 'email-already-in-use') {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text('Email is already in use'),
+          );
+        },
+      );
+    } else {
+      // Handle other errors if needed
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text('An error occurred'),
+          );
+        },
+      );
+    }
   }
+}
+
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( backgroundColor: Colors.grey[200],
       body: Container(
         padding: EdgeInsets.all(20.0),
         child: Center( 
@@ -55,8 +89,9 @@ class _SignupPageState extends State<SignupPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black87,),
+                  border: Border.all(color: Colors.white,),
                   borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
                 ),
                 child: Padding(padding: EdgeInsets.only(left: 20),
                 child: TextField(
@@ -69,15 +104,16 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
 
             //Password text 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal:20),
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black87,),
+                  border: Border.all(color: Colors.white,),
                   borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
                 ),
                 child: Padding(padding: EdgeInsets.only(left: 20),
                 child: TextField(
@@ -91,15 +127,16 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             
             //Confirm Password text field
             Padding(
               padding: const EdgeInsets.symmetric(horizontal:20),
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black87,),
+                  border: Border.all(color: Colors.white,),
                   borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
                 ),
                 child: Padding(padding: EdgeInsets.only(left: 20),
                 child: TextField(
@@ -113,7 +150,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 10),
             //sign up button
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
