@@ -28,7 +28,8 @@ class _SignupPageState extends State<SignupPage> {
     _phonenumberController.dispose();
     super.dispose();
   }
- Future addUserDetails(String firstname, String lastname, String email, String number) async {
+ Future addUserDetails(String firstname, String lastname, 
+ String email, String number) async {
     await FirebaseFirestore.instance.collection('Users').add({
         'first name': firstname,
         'last name': lastname,
@@ -37,58 +38,83 @@ class _SignupPageState extends State<SignupPage> {
       }
     );
   }
-
-
-  Future signUp() async {
-  try {
-    if (_confirmPassController.text.trim() == _passwordController.text.trim()) {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-      //adding user details
-      addUserDetails(
-          _firstNameController.text.trim(),
-          _lastNameController.text.trim(),
-          _emailController.text.trim(),
-          _phonenumberController.text.trim());
-    } 
-    
-    
-    else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text('Passwords do not match'),
+    bool passConfirmed() {
+  return _confirmPassController.text.trim() == _passwordController.text.trim();
+  }
+  Future signUp() async{
+      try{
+      if(passConfirmed()){
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
           );
-        },
-      );
-    }
-  } catch (e) {
-    // Check if the error is due to the email already being in use
-    if (e is FirebaseAuthException && e.code == 'email-already-in-use') {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text('Email is already in use'),
-          );
-        },
-      );
-    } else {
-      // Handle other errors if needed
-      showDialog(
-        context: context,
-        builder: (context) {
+          addUserDetails(
+              _firstNameController.text.trim(),
+              _lastNameController.text.trim(),
+              _emailController.text.trim(),
+              _phonenumberController.text.trim());
+      }
+      }
+      catch (e){
+        print(e);
+        showDialog(context: context,
+         builder: (context){
           return AlertDialog(
             content: Text(e.toString()),
           );
-        },
-      );
-    }
+         });
+      }
   }
-}
+    //   Future signUp() async {
+    //   try {
+    //     if (_confirmPassController.text.trim() == _passwordController.text.trim()) {
+    //       await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    //         email: _emailController.text.trim(),
+    //         password: _passwordController.text.trim(),
+    //       );
+    //       //adding user details
+    //       addUserDetails(
+    //           _firstNameController.text.trim(),
+    //           _lastNameController.text.trim(),
+    //           _emailController.text.trim(),
+    //           _phonenumberController.text.trim());
+    //     } 
+        
+        
+    //     else {
+    //       showDialog(
+    //         context: context,
+    //         builder: (context) {
+    //           return AlertDialog(
+    //             content: Text('Passwords do not match'),
+    //           );
+    //         },
+    //       );
+    //     }
+    //   } catch (e) {
+    //     // Check if the error is due to the email already being in use
+    //     if (e is FirebaseAuthException && e.code == 'email-already-in-use') {
+    //       showDialog(
+    //         context: context,
+    //         builder: (context) {
+    //           return AlertDialog(
+    //             content: Text('Email is already in use'),
+    //           );
+    //         },
+    //       );
+    //     } else {
+    //       // Handle other errors if needed
+    //       showDialog(
+    //         context: context,
+    //         builder: (context) {
+    //           return AlertDialog(
+    //             content: Text(e.toString()),
+    //           );
+    //         },
+    //       );
+    //     }
+    //   }
+    // }
 
  
 
