@@ -28,13 +28,14 @@ class _SignupPageState extends State<SignupPage> {
     _phonenumberController.dispose();
     super.dispose();
   }
- Future addUserDetails(String firstname, String lastname, 
+ Future addUserDetails(String uid, String firstname, String lastname, 
  String email, String number) async {
     await FirebaseFirestore.instance.collection('Users').add({
         'first name': firstname,
         'last name': lastname,
         'Email': email,
-        'Phone number': number
+        'Phone number': number,
+        'Host': false
       }
     );
   }
@@ -44,11 +45,15 @@ class _SignupPageState extends State<SignupPage> {
   Future signUp() async{
       try{
       if(passConfirmed()){
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim(),
           );
+
+          String uid = userCredential.user!.uid;
+
           addUserDetails(
+              uid,
               _firstNameController.text.trim(),
               _lastNameController.text.trim(),
               _emailController.text.trim(),

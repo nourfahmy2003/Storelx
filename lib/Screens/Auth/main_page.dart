@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:storelx/Screens/Auth/Auth_page.dart';
-import 'package:storelx/Screens/Home_page.dart';
+import 'package:storelx/Screens/home%20pages/Storee_page.dart';
 
 
 class MainPage extends StatelessWidget {
