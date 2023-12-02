@@ -31,6 +31,7 @@ class _SignupPageState extends State<SignupPage> {
  Future addUserDetails(String uid, String firstname, String lastname, 
  String email, String number) async {
     await FirebaseFirestore.instance.collection('Users').add({
+        'uid': uid,
         'first name': firstname,
         'last name': lastname,
         'Email': email,
@@ -70,58 +71,7 @@ class _SignupPageState extends State<SignupPage> {
          });
       }
   }
-    //   Future signUp() async {
-    //   try {
-    //     if (_confirmPassController.text.trim() == _passwordController.text.trim()) {
-    //       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-    //         email: _emailController.text.trim(),
-    //         password: _passwordController.text.trim(),
-    //       );
-    //       //adding user details
-    //       addUserDetails(
-    //           _firstNameController.text.trim(),
-    //           _lastNameController.text.trim(),
-    //           _emailController.text.trim(),
-    //           _phonenumberController.text.trim());
-    //     } 
-        
-        
-    //     else {
-    //       showDialog(
-    //         context: context,
-    //         builder: (context) {
-    //           return AlertDialog(
-    //             content: Text('Passwords do not match'),
-    //           );
-    //         },
-    //       );
-    //     }
-    //   } catch (e) {
-    //     // Check if the error is due to the email already being in use
-    //     if (e is FirebaseAuthException && e.code == 'email-already-in-use') {
-    //       showDialog(
-    //         context: context,
-    //         builder: (context) {
-    //           return AlertDialog(
-    //             content: Text('Email is already in use'),
-    //           );
-    //         },
-    //       );
-    //     } else {
-    //       // Handle other errors if needed
-    //       showDialog(
-    //         context: context,
-    //         builder: (context) {
-    //           return AlertDialog(
-    //             content: Text(e.toString()),
-    //           );
-    //         },
-    //       );
-    //     }
-    //   }
-    // }
-
- 
+   
 
   @override
   Widget build(BuildContext context) {

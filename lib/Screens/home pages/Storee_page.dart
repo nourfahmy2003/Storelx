@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:storelx/Screens/get_name.dart';
+import 'package:storelx/Screens/home%20pages/Host_page.dart';
+import 'Get_userdoc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,20 +15,20 @@ class _HomePageState extends State<HomePage> {
   
   final user = FirebaseAuth.instance.currentUser!;
 
-  List<String> DocIds = [];
+  // List<String> DocIds = [];
 
-  Future getDocIds() async{
-    await FirebaseFirestore.instance.collection('Users').get().then(
-      (value) => value.docs.forEach((element) {
-        print(element.reference);
-        DocIds.add(element.reference.id);
-      }) );
-  }
-  
-
+  // Future getDocIds() async{
+  //   await FirebaseFirestore.instance.collection('Users').get().then(
+  //     (value) => value.docs.forEach((element) {
+  //       print(element.reference);
+  //       DocIds.add(element.reference.id);
+  //     }) );
+  // }
+    
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Storee page'),),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -35,32 +36,6 @@ class _HomePageState extends State<HomePage> {
           children: [
             Text('Signed In as: ' + user.email!),
             Text('Signed ID: ' + user.uid),
-              // StreamBuilder(
-              // stream: FirebaseFirestore.instance.collection('Users').doc(user.uid).collection('storages').snapshots(),
-              //   builder: (context, snapshot) {
-              //     return Expanded(
-              //       child: Container(
-              //         color: Colors.black45,
-              //         width: double.infinity,
-              //         child: ListView(
-              //         children: snapshot.data!.docs.map((DocumentSnapshot document) {
-              //           Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-
-              //           // Access fields of each document
-              //           String field1 = data['price'];
-              //           String field2 = data['Country'];
-
-              //           return ListTile(
-              //             title: Text('Field1: $field1'),
-              //             subtitle: Text('Field2: $field2'),
-              //           );
-              //         }).toList(),
-                      
-              //     )
-              //     )
-              //     );
-              //   }
-              // ),
 
             MaterialButton(onPressed:() {
               FirebaseAuth.instance.signOut();
@@ -69,19 +44,24 @@ class _HomePageState extends State<HomePage> {
               child: Text('Sign out'),
               ),
               MaterialButton(onPressed:(){
+
               user.delete();
               },
               color: Colors.red,
               child: Text('Delete Account'),
               ),
-              MaterialButton(onPressed:() {
-              FirebaseFirestore.instance.collection('Users')
-              .doc(user.uid).update({'Host': true});
-
+              MaterialButton(onPressed:() async{
+                await UserManagement.toHost();
+                 Navigator.push(context,
+                      MaterialPageRoute(builder: (context){
+                        return hostPage();
+                          }));
               },
               color: Colors.red,
               child: Text('Turn to Host'),
               ),
+
+               
           ],
         )
         ),
