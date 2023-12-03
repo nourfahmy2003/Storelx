@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:storelx/Screens/home%20pages/Storee_page.dart';
 
 import 'Get_userdoc.dart';
@@ -27,22 +28,38 @@ class _hostPageState extends State<hostPage> {
   void dispose(){
     _locationController.dispose();
     _priceController.dispose();
+    _countryController.dispose();
+    _cityController.dispose();
+    _zipController.dispose();
+    _lengthController.dispose();
+    _widthController.dispose();
     super.dispose();
   }
 
-  Future addhouseDetails(String uid, String firstname, String lastname, 
-  String email, String number) async {
-      await FirebaseFirestore.instance.collection('Users').add({
-          'uid': uid,
-          'first name': firstname,
-          'last name': lastname,
-          'Email': email,
-          
+  Future addhouseDetails(String uid, int price, String location, 
+  String country, String city, String zipcode, int length, int width) async {
+      await FirebaseFirestore.instance.collection('storages').add({
+          'user_uid': user.uid,
+          'price': price,
+          'location': location,
+          'city': city,
+          'country':country,
+          'zipcode':zipcode,
+          'length':length,
+          'width':width,
           'rented': false
         }
       );
     }
-
+  void cleartexts(){
+    _locationController.clear();
+    _priceController.clear();
+    _countryController.clear();
+    _cityController.clear();
+    _zipController.clear();
+    _lengthController.clear();
+    _widthController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,27 +98,72 @@ class _hostPageState extends State<hostPage> {
               color: Colors.red,
               child: Text('Turn to Storee'),
               ),
+              TextField(controller: _cityController,
+                    decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'City',
+                  ),),
+                  TextField(controller: _countryController,
+                    decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Country',
+                  ),),
+                  TextField(controller: _locationController,
+                    decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Location',
+                  ),),
+                  TextField(controller: _zipController,
+                    decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'zip code',
+                  ),),
+                TextField(keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    controller: _priceController,
+                    decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Price',
+                  ),),
+                  TextField(keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    controller: _lengthController,
+                    decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'length',
+                  ),),
+                  TextField(keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    controller: _widthController,
+                    decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'width',
+                  ),),
+                  
               ElevatedButton(
               onPressed: () {
-                // Get the user ID from the current user
-                // final userId = FirebaseAuth.instance.currentUser.uid;
-
                 // Get the price and location values from the form
-                final price = _priceController.text.trim();
+                final price = int.parse(_priceController.text.trim());
                 final location = _locationController.text.trim();
                 final country = _countryController.text.trim();
                 final city = _cityController.text.trim();
+                final zipcode = _zipController.text.trim();
+                final length = int.parse(_lengthController.text.trim());
+                final width = int.parse(_widthController.text.trim());
+
+                
 
                 // Create a new house document with the user ID, price, and location
-                FirebaseFirestore.instance.collection('storages').add({
-                  // 'user_id': userId,
-                  'price': price,
-                  'location': location,
-                }).then((value) {
-                  print('House added successfully!');
-                }).catchError((error) {
-                  print('Error adding house: $error');
-                });
+                addhouseDetails(user.uid,price,location,country,city
+                ,zipcode,length,width);
+                ;
+                cleartexts();
               },
               child: Text('Add House'),
             ),
